@@ -24,18 +24,19 @@ sub populate_entries_from_module_links_in_description {
     die 'Please specify list (either in argument or in caller\'s $LIST'
         unless $list;
 
+    $list->{entries} ||= [];
     for my $mod (
         do { my %seen; grep { !$seen{$_}++ }
                  ($list->{description} =~ /<pm:(\w+(?:::\w+)*)>/g)
              }) {
-        next unless grep { $_->{module} eq $mod } @{ $list->{entries} };
+        next if grep { $_->{module} eq $mod } @{ $list->{entries} };
         push @{ $list->{entries} }, {module=>$mod};
     }
     $list;
 }
 
 1;
-# ABSTRACT:
+# ABSTRACT: Various utility functions related to Acme::CPANModules
 
 =head1 FUNCTIONS
 
